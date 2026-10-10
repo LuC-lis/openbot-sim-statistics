@@ -48,6 +48,7 @@
 | 跟踪误差的配对差值 | **−0.275 m** [−0.335, −0.216] | 同上 |
 | 老师的失败**全部是碰撞**（45/120，越界 0、打转 0）；条件因子对失败**均无显著预测力**（p 均 ≥ 0.15） | logistic 拟合，n = 120 | 同上 |
 | 设计中每个因子在每个重复内都恰好占满各分层 | 见 `results/design_coverage.png` | 同上 |
+| 这个设计能检测出多大的差异 | 成功率上约 **16.4 个百分点**、配对跟踪误差上 **dz = 0.256**（80 % 功效） | `statistics/power.py` |
 
 最后一行的"无显著结果"就按无显著结果写：在 120 个回合、45 个事件下，这个模型只能
 排除起点位姿、障碍位置与扰动率的**强**效应，别的都排除不了。
@@ -76,6 +77,7 @@
 | 日志里把失效模式分开记（`off_road` / `turned` / `collision`） | "失败了"不是一条结论 |
 | 用 **Wilson** 区间而不是 Wald | 策略的成功率正好落在 0 % 和 100 %，正态近似在那里根本不成立 |
 | 用**置换检验**而不是 t 检验 | 可交换性假设被写下来并检查过，而不是默认成立 |
+| **事先的功效分析**（62.5 % vs 40 % 在 80 % 功效下需每个策略 77 个回合；实际跑了 120） | 样本量在看数据之前定好，事后同时报告"最小可检测效应" |
 
 完整协议（含"这套分析做不到什么"）：`docs/statistical_protocol.md`。
 
@@ -87,7 +89,7 @@
 git clone https://github.com/LuC-lis/openbot-sim-statistics && cd openbot-sim-statistics
 pip install -r requirements.txt
 
-python -m tests.test_statistics                                        # 11/11，约 10 秒
+python -m tests.test_statistics                                        # 12/12，约 10 秒
 python -m statistics.evaluate_design --out results/outcomes_design.csv # 约 3 分钟，纯 CPU
 python -m statistics.analyze results/outcomes_design.csv --report results/report_design.md \
         --figure results/design_summary.png
@@ -112,6 +114,7 @@ statistics/            分析层：只依赖 numpy，不用 SciPy，不用 Tenso
   intervals.py           Wilson 区间、自助区间、配对自助
   tests.py               置换检验；把输入不敏感写成原假设
   regression.py          logistic 回归（IRLS）+ Wald 标准误 + 优势比
+  power.py               事前样本量 + 最小可检测效应
   analyze.py             CLI：CSV → 区间表、模型表、markdown 报告
   evaluate_design.py     CLI：跑设计并写出 CSV
 

@@ -24,6 +24,7 @@ import numpy as np
 
 from .intervals import bootstrap_ci, paired_bootstrap_diff, wilson_interval
 from .outcomes import read_csv
+from .power import minimum_detectable_difference, minimum_detectable_effect
 from .regression import logistic_regression
 from .tests import permutation_test
 
@@ -196,6 +197,24 @@ def to_markdown(result: dict, source: str = "") -> str:
                 f"[{c['track_diff_lo']:+.3f}, {c['track_diff_hi']:+.3f}] |"
             )
         lines += [""]
+
+    lines += ["## What this design could have detected", ""]
+    for row in s:
+        if row["n"] and 0 < row["success"] < 1:
+            mde = minimum_detectable_difference(row["n"], min(max(row["success"], 0.05), 0.95))
+            lines.append(
+                f"- **{row['policy']}** (n = {row['n']}, observed {row['success']*100:.1f} %): "
+                f"a difference of about **{mde*100:.1f} percentage points** against a comparison "
+                "policy would have been detected with 80 % power at alpha = 0.05. "
+                "Smaller differences remain open."
+            )
+    if result["comparisons"]:
+        n_pairs = result["comparisons"][0]["n_pairs"]
+        lines.append(
+            f"- Paired tracking-error comparisons ({n_pairs} pairs): the smallest detectable "
+            f"standardised effect is dz = {minimum_detectable_effect(n_pairs):.3f}."
+        )
+    lines += [""]
 
     fits = result["regression"]
     for name, fit in fits.items():

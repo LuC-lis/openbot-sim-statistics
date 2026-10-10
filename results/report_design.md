@@ -24,6 +24,11 @@ Same conditions, same seeds, so the difference is bootstrapped on pairs; the p-v
 |---|---:|---:|---|---:|---:|---|
 | expert | 120 | +62.5 pp | [+53.3, +71.7] | 0.0010 | -0.275 | [-0.335, -0.216] |
 
+## What this design could have detected
+
+- **expert** (n = 120, observed 62.5 %): a difference of about **16.4 percentage points** against a comparison policy would have been detected with 80 % power at alpha = 0.05. Smaller differences remain open.
+- Paired tracking-error comparisons (120 pairs): the smallest detectable standardised effect is dz = 0.256.
+
 ## Logistic regression on the failure indicator — expert
 
 n = 120, failures = 45, McFadden pseudo-R² = 0.020, IRLS iterations = 5, information-matrix condition number = 1.74

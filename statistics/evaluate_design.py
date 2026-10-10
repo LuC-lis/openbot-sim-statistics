@@ -18,6 +18,7 @@ from openbot_sim.policies import TFLitePolicy
 
 from .design import ConditionDesign
 from .outcomes import baseline_policies, run_design, write_csv
+from .power import n_for_paired_effect, n_for_two_proportions
 
 
 def plot_design(conditions, path: str) -> None:
@@ -75,6 +76,12 @@ def main() -> None:
     print(
         f"design: {args.conditions} conditions x {args.replicates} replicates "
         f"= {len(conditions)} episodes per policy, {len(policies)} policies"
+    )
+    plan = n_for_two_proportions(0.625, 0.40)
+    print(
+        f"a-priori plan: {plan} episodes per policy are needed to detect 62.5 % vs 40 % "
+        f"at 80 % power / alpha = 0.05 ({n_for_paired_effect(0.5)} pairs for dz = 0.5); "
+        f"this run uses {len(conditions)}."
     )
     if args.design_out:
         import csv

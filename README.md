@@ -10,7 +10,7 @@ reported with interval estimates, comparisons made on paired seeds, and the
 failure modes fitted rather than summarised.
 
 [![Python](https://img.shields.io/badge/python-3.9%2B-blue.svg)](#)
-[![tests](https://img.shields.io/badge/tests-11%2F11%20passing-success.svg)](#tests)
+[![tests](https://img.shields.io/badge/tests-12%2F12%20passing-success.svg)](#reproduce-it)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
 <img src="results/design_summary.png" width="720" alt="success rate with Wilson interval, and paired differences">
@@ -64,6 +64,7 @@ from that file by `python -m statistics.analyze`.
 | Paired difference in tracking error | **−0.275 m** [−0.335, −0.216] | same |
 | Expert failures are **all collisions** (45/120); off-road 0, spin-out 0 | condition factors do **not** significantly predict failure (all p ≥ 0.15) | logistic fit, n = 120 |
 | Every factor is perfectly stratified in the design | one point per stratum, per factor, per replicate | [`results/design_coverage.png`](results/design_coverage.png) |
+| What the design could have detected | **16.4 pp** on the success rate, **dz = 0.256** on paired tracking error, at 80 % power | [`statistics/power.py`](statistics/power.py) |
 
 The null result in the last row is reported as a null result: with 120 episodes
 and 45 events the model can rule out strong effects of the starting pose, the
@@ -94,6 +95,7 @@ These are single-run numbers from the training pipeline in this repository
 | **Failure modes kept separate** in the log (`off_road`, `turned`, `collision`) | "failed" is not a finding |
 | **Wilson** intervals rather than Wald | policies sit at 0 % and 100 %, where the normal approximation is simply wrong |
 | **Permutation** tests rather than t-tests | the exchangeability assumption is written down and checked, not assumed |
+| **A-priori power analysis** (77 episodes per policy for 62.5 % vs 40 % at 80 % power; 120 run) | the sample size is chosen before the data, and the minimum detectable effect is quoted next to it afterwards |
 
 Full protocol, including what this analysis cannot tell you:
 [`docs/statistical_protocol.md`](docs/statistical_protocol.md).
@@ -106,7 +108,7 @@ Full protocol, including what this analysis cannot tell you:
 git clone https://github.com/LuC-lis/openbot-sim-statistics && cd openbot-sim-statistics
 pip install -r requirements.txt
 
-python -m tests.test_statistics                                  # 11/11, ~10 s
+python -m tests.test_statistics                                  # 12/12, ~10 s
 python -m statistics.evaluate_design --out results/outcomes_design.csv   # ~3 min, CPU only
 python -m statistics.analyze results/outcomes_design.csv --report results/report_design.md \
         --figure results/design_summary.png
@@ -131,6 +133,7 @@ statistics/            the analysis layer — numpy only, no SciPy, no TensorFlo
   intervals.py           Wilson score interval, bootstrap, paired bootstrap
   tests.py               permutation tests; the input-blindness hypothesis
   regression.py          logistic regression (IRLS) + Wald SEs + odds ratios
+  power.py               a-priori sample size + minimum detectable effect
   analyze.py             CLI: outcomes CSV -> interval table, model table, markdown
   evaluate_design.py     CLI: run the design and write the outcomes CSV
 

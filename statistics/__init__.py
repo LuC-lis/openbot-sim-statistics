@@ -13,6 +13,7 @@ Modules
 ``intervals``   Wilson score interval, percentile bootstrap, paired bootstrap
 ``tests``       permutation tests (unpaired and paired)
 ``regression``  logistic regression on the failure indicator (IRLS + Wald SEs)
+``power``       a-priori sample size and post-hoc minimum detectable effect
 ``analyze``     CLI: outcomes CSV -> interval table, model table, markdown report
 
 Typical use::
@@ -27,6 +28,12 @@ from .intervals import (  # noqa: F401
     paired_bootstrap_diff,
     wilson_interval,
 )
+from .power import (  # noqa: F401
+    minimum_detectable_difference,
+    minimum_detectable_effect,
+    n_for_paired_effect,
+    n_for_two_proportions,
+)
 from .regression import LogisticFit, logistic_regression  # noqa: F401
 from .tests import permutation_test  # noqa: F401
 
@@ -39,6 +46,10 @@ __all__ = [
     "permutation_test",
     "logistic_regression",
     "LogisticFit",
+    "n_for_two_proportions",
+    "n_for_paired_effect",
+    "minimum_detectable_difference",
+    "minimum_detectable_effect",
 ]
 
 __version__ = "1.0.0"

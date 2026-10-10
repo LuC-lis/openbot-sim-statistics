@@ -9,6 +9,12 @@ import numpy as np
 
 from statistics.design import ConditionDesign, latin_hypercube
 from statistics.intervals import bootstrap_ci, paired_bootstrap_diff, wilson_interval
+from statistics.power import (
+    minimum_detectable_difference,
+    minimum_detectable_effect,
+    n_for_paired_effect,
+    n_for_two_proportions,
+)
 from statistics.regression import logistic_regression
 from statistics.tests import observation_channel_test, permutation_test
 
@@ -138,6 +144,19 @@ def test_design_pairs_seeds_across_policies():
     # determinism
     assert [c.to_row() for c in ConditionDesign(n_conditions=8, replicates=2, seed=11).build()] == \
            [c.to_row() for c in conditions]
+
+
+def test_power_planning_is_monotone_and_self_consistent():
+    # detecting 60% vs 30% needs fewer episodes than 60% vs 55%
+    assert n_for_two_proportions(0.6, 0.3) < n_for_two_proportions(0.6, 0.55)
+    # more power needs more episodes
+    assert n_for_two_proportions(0.6, 0.4, power=0.9) > n_for_two_proportions(0.6, 0.4, power=0.8)
+    # the closed-form and the bisection inverse agree to within one episode
+    n = n_for_two_proportions(0.625, 0.4)
+    mde = minimum_detectable_difference(n, 0.625)
+    assert 0.20 < mde < 0.24
+    assert n_for_paired_effect(0.5) == 32
+    assert abs(minimum_detectable_effect(32) - 0.5) < 0.01
 
 
 def main() -> None:
