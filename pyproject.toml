@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "openbot-sim"
+version = "0.1.0"
+description = "A from-scratch simulation and imitation-learning pipeline for the OpenBot smartphone robot"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+dependencies = ["numpy>=1.21"]
+
+[tool.setuptools]
+packages = ["openbot_sim"]
