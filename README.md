@@ -2,12 +2,14 @@
 
 # OpenBot-Sim · statistics
 
-**A designed experiment on a learned control policy.**
+**Statistical design and evaluation of a vision-based imitation-learning policy.**
 
 Same simulator as [openbot-sim](https://github.com/LuC-lis/openbot-sim), read
-through a statistical lens: conditions sampled by Latin hypercube, outcomes
-reported with interval estimates, comparisons made on paired seeds, and the
-failure modes fitted rather than summarised.
+through a statistical lens. The project began with a shortcut-learning failure
+— a policy that aced closed-loop recovery without using its camera — and is
+organised here as a designed experiment: conditions sampled by Latin hypercube,
+outcomes reported with interval estimates, comparisons made on paired seeds, and
+the failure modes fitted rather than summarised.
 
 [![Python](https://img.shields.io/badge/python-3.9%2B-blue.svg)](#)
 [![tests](https://img.shields.io/badge/tests-12%2F12%20passing-success.svg)](#reproduce-it)
